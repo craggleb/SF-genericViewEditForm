@@ -1,0 +1,38 @@
+<aura:component implements="force:hasRecordId,flexipage:availableForRecordHome">
+    <aura:attribute name="fieldsString" type="String" default="Id,Name" />
+    <aura:attribute name="fields" type="String[]" default="['Id', 'Name']"/>
+    <aura:attribute name="object" type="String" default="Account"/>
+    <aura:attribute name="forceId" type="String" default="{!v.recordId}"/>
+    <aura:attribute name="refreshOnSave" type="boolean" default="true" />
+     
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    
+    <lightning:recordViewForm recordId="{!v.forceId}" objectApiName="{!v.object}" aura:id="viewForm">
+        <div class="slds-box">
+        	<aura:iteration items="{!v.fields}" var="field">
+                <lightning:outputField fieldName="{!field}" />
+            </aura:iteration>
+            <div aura:id="viewButtons" class="slds-align_absolute-center">
+    			<lightning:button class="slds-m-top_small" variant="brand" type="submit" label="Edit" onclick="{!c.showEdit}"/>
+    		</div>
+        </div>
+    </lightning:recordViewForm>
+    <lightning:recordEditForm recordId="{!v.forceId}" 
+                              objectApiName="{!v.object}" 
+                              aura:id="editForm" 
+                              class="slds-hide"
+                              onsubmit="{!c.handleSubmit}"
+                              onsuccess="{!c.handleSuccess}"
+                              onerror="{!c.handleError}">
+        <div class="slds-box">
+            <lightning:messages />
+            <aura:iteration items="{!v.fields}" var="field">
+            	<lightning:inputField fieldName="{!field}" />
+        	</aura:iteration>
+            <div aura:id="editButtons" class="slds-align_absolute-center">
+    			<lightning:button class="slds-m-top_small" variant="brand" type="submit" label="Save" aura:id = "saveButton"/> <lightning:button class="slds-m-top_small" variant="brand" label="Close" onclick="{!c.showView}" aura:id="closeButton" />
+    		</div>  
+        </div>
+    </lightning:recordEditForm>  
+</aura:component>
